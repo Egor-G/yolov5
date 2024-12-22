@@ -441,7 +441,8 @@ class ToTensor:
 
         im = np.array HWC in BGR order
         """
-        im = np.ascontiguousarray(im.transpose((2, 0, 1))[::-1])  # HWC to CHW -> BGR to RGB -> contiguous
+        im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)  # bgr to gray
+        im = im.reshape([1, *im.shape])  # HW to CHW
         im = torch.from_numpy(im)  # to torch
         im = im.half() if self.half else im.float()  # uint8 to fp16/32
         im /= 255.0  # 0-255 to 0.0-1.0

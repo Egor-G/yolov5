@@ -603,7 +603,7 @@ def parse_model(d, ch, model, imgsz):
 class TFModel:
     """Implements YOLOv5 model in TensorFlow, supporting TensorFlow, Keras, and TFLite formats for object detection."""
 
-    def __init__(self, cfg="yolov5s.yaml", ch=3, nc=None, model=None, imgsz=(640, 640)):
+    def __init__(self, cfg="yolov5s.yaml", ch=1, nc=None, model=None, imgsz=(640, 640)):
         """Initializes TF YOLOv5 model with specified configuration, channels, classes, model instance, and input
         size.
         """

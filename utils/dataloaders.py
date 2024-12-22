@@ -313,7 +313,8 @@ class LoadScreenshots:
             im = self.transforms(im0)  # transforms
         else:
             im = letterbox(im0, self.img_size, stride=self.stride, auto=self.auto)[0]  # padded resize
-            im = im.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
+            im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)  # bgr to gray
+            im = im.reshape([1, *im.shape])  # HW to CHW
             im = np.ascontiguousarray(im)  # contiguous
         self.frame += 1
         return str(self.screen), im, im0, None, s  # screen, img, original img, im0s, s
@@ -401,7 +402,8 @@ class LoadImages:
             im = self.transforms(im0)  # transforms
         else:
             im = letterbox(im0, self.img_size, stride=self.stride, auto=self.auto)[0]  # padded resize
-            im = im.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
+            im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)  # bgr to gray
+            im = im.reshape([1, *im.shape])  # HW to CHW
             im = np.ascontiguousarray(im)  # contiguous
 
         return path, im, im0, self.cap, s
@@ -841,7 +843,8 @@ class LoadImagesAndLabels(Dataset):
             labels_out[:, 1:] = torch.from_numpy(labels)
 
         # Convert
-        img = img.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # bgr to gray
+        img = img.reshape([1, *img.shape])  # HW to CHW
         img = np.ascontiguousarray(img)
 
         return torch.from_numpy(img), labels_out, self.im_files[index], shapes
